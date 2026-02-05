@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: Acc-onboarding template
+  name: Acc-onboarding-template
   title: Account onboarding template
   description: An example template for the scaffolder that creates a simple Node.js service
 spec:
@@ -15,8 +15,8 @@ spec:
     - title: Custom Field
       properties:
         myField:
-          type: string
-          ui:field: dynamicFieldLoader
+          type: object
+          ui:field: DynamicFieldLoader
           ui:options:
             url: 'http://localhost:8080/plugin.json'
             elementName: 'app-comp'

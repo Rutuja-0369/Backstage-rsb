@@ -3,15 +3,94 @@
 apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
+  namespace: default
   name: guest
 spec:
-  memberOf: [guests]
+  memberOf: [group:default/guests]
 ---
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-group
 apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:
+  namespace: default
   name: guests
 spec:
   type: team
   children: []
+
+---
+
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  namespace: default
+  name: Rutuja-0369
+spec:
+  memberOf: [group:default/guests]
+
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: User
+# metadata:
+#   namespace: default # default namespace is common
+#   name: Rutuja-0369 # unique name, used in references
+#   title: Rutuja Bhoite # human-readable display name
+# spec:
+#   profile:
+#     displayName: Rutuja Bhoite
+#     email: rutuj.0369@example.com
+#     picture: https://example.com/rutuja0369.jpg
+#   memberOf: [group:default/platform-team]
+
+
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: Domain
+# metadata:
+#   name: verizon
+# spec:
+#   owner: group:default/platform-team
+# ---
+
+# apiVersion: backstage.io/v1alpha1
+# kind: Group
+# metadata:
+#   namespace: default
+#   name: platform-team
+# spec:
+#   type: team
+#   profile:
+#     displayName: Platform Team
+#   children: [group:default/verizon-finance]
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: Group
+# metadata:
+#   name: verizon-finance
+#   namespace: default
+# spec:
+#   type: team
+#   children: []
+
+# ---
+# apiVersion: backstage.io/v1alpha1
+# kind: System
+# metadata:
+#   name: payments-platform
+#   description: Payments systems for Verizon
+# spec:
+#   domain: verizon
+#   owner: group:default/verizon-finance
+
+# ---
+
+# apiVersion: backstage.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: payment-api
+#   description: Payment processing API
+# spec:
+#   type: service
+#   lifecycle: production
+#   system: payments-platform
+#   owner: group:verizon-finance

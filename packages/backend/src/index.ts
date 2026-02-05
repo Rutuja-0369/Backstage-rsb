@@ -6,7 +6,13 @@
  * Happy hacking!
  */
 
+import dotenv from 'dotenv';
+import path from 'path';
+
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
+
 import { createBackend } from '@backstage/backend-defaults';
+import scaffolderModule from '@internal/plugin-scaffolder-backend-module-log-parameters';
 
 const backend = createBackend();
 
@@ -15,7 +21,7 @@ backend.add(import('@backstage/plugin-proxy-backend'));
 backend.add(import('@backstage/plugin-scaffolder-backend'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 backend.add(import('@backstage/plugin-techdocs-backend'));
-
+backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
 // auth plugin
 backend.add(import('@backstage/plugin-auth-backend'));
 // See https://backstage.io/docs/backend-system/building-backends/migrating#the-auth-plugin
@@ -40,7 +46,7 @@ backend.add(
 
 // search plugin
 backend.add(import('@backstage/plugin-search-backend'));
-
+ 
 // search engine
 // See https://backstage.io/docs/features/search/search-engines
 backend.add(import('@backstage/plugin-search-backend-module-pg'));
@@ -51,5 +57,6 @@ backend.add(import('@backstage/plugin-search-backend-module-techdocs'));
 
 // kubernetes
 backend.add(import('@backstage/plugin-kubernetes-backend'));
-
+// backend.add(scaffolderModule)
+backend.add(import('@internal/plugin-scaffolder-backend-module-log-parameters'));
 backend.start();

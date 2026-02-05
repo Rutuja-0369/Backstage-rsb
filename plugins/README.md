@@ -1,9 +1,26 @@
-# The Plugins Folder
+import { createTemplateAction } from '@backstage/plugin-scaffolder-backend';
 
-This is where your own plugins and their associated modules live, each in a
-separate folder of its own.
-
-If you want to create a new plugin here, go to your project root directory, run
-the command `yarn new`, and follow the on-screen instructions.
-
-You can also check out existing plugins on [the plugin marketplace](https://backstage.io/plugins)!
+export const logParametersAction = createTemplateAction({
+  id: 'custom:log-parameters',
+  schema: {
+    input: {
+      type: 'object',
+      properties: {
+        parameters: {
+          type: 'object',
+          description: 'Parameters to log',
+        },
+      },
+    },
+  },
+  async handler(ctx) {
+    ctx.logger.info('Template Parameters:', {
+      gitUrl: ctx.input.parameters.gitUrl,
+      branch: ctx.input.parameters.branch,
+      applicationType: ctx.input.parameters.applicationType,
+      codebase: ctx.input.parameters.codebase,
+      // Mask sensitive data
+      gitCredentials: '***' 
+    });
+  },
+});

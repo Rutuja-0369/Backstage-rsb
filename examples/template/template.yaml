@@ -23,6 +23,14 @@ spec:
           ui:autofocus: true
           ui:options:
             rows: 5
+    - title: Custom Field
+      properties:
+        myField:
+          type: object
+          ui:field: DynamicFieldLoader
+          ui:options:
+            url: 'http://localhost:8080/plugin.json'
+            elementName: 'app-comp'
     - title: Choose a location
       required:
         - repoUrl
@@ -74,3 +82,82 @@ spec:
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}
+
+
+---
+
+apiVersion: scaffolder.backstage.io/v1beta3
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
+kind: Template
+metadata:
+  name: example-nodejs-template
+  title: Example Node.js Template
+  description: An example template for the scaffolder that creates a simple Node.js service
+spec:
+  owner: user:guest
+  type: service
+
+  # These parameters are used to generate the input form in the frontend, and are
+  # used to gather input data for the execution of the template.
+  parameters:
+    - title: Application form
+      required:
+        - gitUrl
+        - branch
+        - gitCredentials
+      properties:
+        gitUrl:
+          title: Git URL
+          type: string
+          description: Unique name of the component
+          ui:autofocus: true
+          ui:options:
+            rows: 5
+        branch:
+          title: Branch
+          type: string
+          description: The branch to build from
+          default: main
+
+        gitCredentials:
+          title: Git Credentials
+          type: string
+          description: The credentials to use for git operations
+          ui:widget: password
+
+    - title: Application Details
+      required:
+        - applicationType
+        - codebase
+      properties:
+        applicationType:
+          title: Application Type
+          type: string
+          description: The type of application to create cicd job for
+          enum:
+            - spring-boot
+            - nodejs
+            - python-flask
+            - golang
+          default: spring-boot
+        codebase:
+          title: Codebase
+          type: string
+          description: The codebase to create cicd job for
+
+
+  # These steps are executed in the scaffolder backend, using data that we gathered
+  # via the parameters above.
+  steps:
+    # Each step executes an action, in this case one templates files into the working directory.
+    - id: log-parameters
+      name: Log Parameters
+      action: custom:log-parameters
+      input:
+        parameters:
+          gitUrl: ${{ parameters.gitUrl }}
+          branch: ${{ parameters.branch }}
+          applicationType: ${{ parameters.applicationType }}
+          codebase: ${{ parameters.codebase }}
+          gitCredentials: ${{ parameters.gitCredentials }}
+  
